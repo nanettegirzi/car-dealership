@@ -3,20 +3,20 @@ using System.Collections.Generic;
 
 namespace CarDealership.Models
 {
-    class Car
+     public class Car
     {
         private string _makeModel;
         private int _price;
         private int _miles;
 
-        private static List<Car> _instances = new List<Car>();
+        private static List<Car> _instances = new List<Car> {};
 
-        public Car(string makeModel, int carPrice, int milage)
+        public Car(string makeModel, int price, int milage)
         {
             _makeModel = makeModel;
             _price = price;
             _miles = milage;
-            _instances.Add(this);
+            //_instances.Add(this);
         }
 
         public static List<Car> GetAll()
@@ -24,9 +24,9 @@ namespace CarDealership.Models
             return _instances;
         }
 
-        public bool ClearAll()
+        public static void ClearAll()
         {
-            return _instances.Remove(this);
+             _instances.Clear();
         }
 
         public string GetMakeModel()
@@ -41,7 +41,11 @@ namespace CarDealership.Models
 
         public int GetMilage()
         {
-            return _milage;
+            return _miles;
+        }
+        public void Save()
+        {
+            _instances.Add(this);
         }
     }
 }

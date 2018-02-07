@@ -1,32 +1,41 @@
 using Microsoft.AspNetCore.Mvc;
 using CarDealership.Models;
-using System;
+using System.Collections.Generic;
 
 namespace CarDealership.Controllers
 {
     public class CarController : Controller
     {
-        [HttpGet("/")]
+        [HttpGet("/cars")]
         public ActionResult Index()
         {
-            return View(Car.GetAll());
+            List<Car> allCars = Car.GetAll();
+            return View(allCars);
         }
 
-        [HttpPost("/")]
-        public ActionResult AddCar()
+        [HttpGet("/cars/new")]
+        public ActionResult CreateForm()
         {
-            string makeModel = Request.Form["make-model"];
-            int price = int.Parse(Request.Form["price"]);
-            int milage = int.Parse(Request.Form["milage"]);
-
-            Car newCar = new Car(makeModel, price, milage);
-
-            return View ("index", Car.GetAll());
+            return View ();
         }
 
-        [HttpGet("/new")]
-        public ActionResult New()
+        [HttpPost("/cars")]
+        public ActionResult Create()
         {
+            string newMakeModel = Request.Form["make-model"];
+            int newMilage = int.Parse(Request.Form["milage"]);
+            int newPrice = int.Parse(Request.Form["price"]);
+
+            Car newCar = new Car (newMakeModel, newMilage, newPrice);
+            newCar.Save();
+            List<Car> allCars = Car.GetAll();
+            return View("Index", allCars);
+        }
+
+        [HttpPost("/cars/delete")]
+        public ActionResult DeleteAll()
+        {
+            Car.ClearAll();
             return View();
         }
     }
